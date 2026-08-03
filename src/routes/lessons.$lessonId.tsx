@@ -1,11 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getLesson, lessons } from "@/data/lessons";
+import { getLesson, lessons, type Lesson } from "@/data/lessons";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { Quiz } from "@/components/Quiz";
 import { useProgress } from "@/lib/progress";
 
 export const Route = createFileRoute("/lessons/$lessonId")({
-  loader: ({ params }) => {
+  loader: ({ params }): { lesson: Lesson } => {
     const lesson = getLesson(Number(params.lessonId));
     if (!lesson) throw notFound();
     return { lesson };
