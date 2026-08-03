@@ -79,14 +79,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "English Step — английский за 20 уроков (A2)" },
-      { name: "description", content: "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты и прогресс." },
+      { title: "English Step — английский за 20 уроков (уровень A2)" },
+      { name: "description", content: "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "English Step — английский за 20 уроков" },
-      { property: "og:description", content: "20 видеоуроков A2, 160+ вопросов и отслеживание прогресса." },
+      { property: "og:title", content: "English Step — английский за 20 уроков (уровень A2)" },
+      { property: "og:description", content: "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "English Step — английский за 20 уроков (уровень A2)" },
+      { name: "twitter:description", content: "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/260ae7b6-13f6-4970-8ed1-500049afb412/id-preview-8e388b84--23bb413d-12f9-4fb4-8e2a-d27fce82e6ae.lovable.app-1785745349851.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/260ae7b6-13f6-4970-8ed1-500049afb412/id-preview-8e388b84--23bb413d-12f9-4fb4-8e2a-d27fce82e6ae.lovable.app-1785745349851.png" },
     ],
     links: [
       {
