@@ -28,7 +28,7 @@ export const Route = createFileRoute("/lessons/$lessonId")({
 });
 
 function LessonPage() {
-  const { lesson } = Route.useLoaderData();
+  const { lesson } = Route.useLoaderData() as { lesson: Lesson };
   const { getLessonProgress, setWatched, saveQuizResult } = useProgress();
   const p = getLessonProgress(lesson.id);
   const next = lessons.find((l) => l.id === lesson.id + 1);
