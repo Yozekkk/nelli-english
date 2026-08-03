@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DailyRouteImport } from './routes/daily'
 import { Route as LessonsIndexRouteImport } from './routes/lessons.index'
 import { Route as LessonsLessonIdRouteImport } from './routes/lessons.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DailyRoute = DailyRouteImport.update({
+  id: '/daily',
+  path: '/daily',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LessonsIndexRoute = LessonsIndexRouteImport.update({
@@ -31,30 +37,34 @@ const LessonsLessonIdRoute = LessonsLessonIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/daily': typeof DailyRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
   '/lessons/': typeof LessonsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/daily': typeof DailyRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
   '/lessons': typeof LessonsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/daily': typeof DailyRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
   '/lessons/': typeof LessonsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lessons/$lessonId' | '/lessons/'
+  fullPaths: '/' | '/daily' | '/lessons/$lessonId' | '/lessons/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lessons/$lessonId' | '/lessons'
-  id: '__root__' | '/' | '/lessons/$lessonId' | '/lessons/'
+  to: '/' | '/daily' | '/lessons/$lessonId' | '/lessons'
+  id: '__root__' | '/' | '/daily' | '/lessons/$lessonId' | '/lessons/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DailyRoute: typeof DailyRoute
   LessonsLessonIdRoute: typeof LessonsLessonIdRoute
   LessonsIndexRoute: typeof LessonsIndexRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/daily': {
+      id: '/daily'
+      path: '/daily'
+      fullPath: '/daily'
+      preLoaderRoute: typeof DailyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lessons/': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DailyRoute: DailyRoute,
   LessonsLessonIdRoute: LessonsLessonIdRoute,
   LessonsIndexRoute: LessonsIndexRoute,
 }
