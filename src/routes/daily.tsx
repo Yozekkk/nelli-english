@@ -49,19 +49,15 @@ function DailyPage() {
         </p>
       </header>
 
-      <section className="glass-panel rounded-3xl p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-xl font-bold">Вопросы дня</h2>
-          <span className="text-sm text-muted-foreground">
-            Серия дней: {state.streak} · Цель: 6 вопросов
-            {state.lastDailyDate === new Date().toISOString().slice(0, 10) ? " · выполнено ✓" : ""}
+      <section className="glass-panel rounded-3xl p-4 sm:p-6">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <h2 className="min-w-0 font-display text-xl font-bold">Вопросы дня</h2>
+          <span className="shrink-0 text-xs text-muted-foreground sm:text-sm">
+            6 заданий · один вопрос за раз
           </span>
         </div>
-        <p className="mt-2 text-sm text-muted-foreground">
-          5 случайных вопросов из курса и один вопрос на повторение старой темы.
-        </p>
         <div className="mt-4">
-          <Quiz questions={daily} onComplete={() => completeDaily()} />
+          <DailyGame pool={pool} onFinish={() => completeDaily()} />
         </div>
       </section>
 
