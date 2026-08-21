@@ -17,28 +17,12 @@ export const Route = createFileRoute("/daily")({
   component: DailyPage,
 });
 
-function seededPick<T>(items: T[], count: number, seed: number): T[] {
-  const arr = [...items];
-  const out: T[] = [];
-  let s = seed;
-  while (arr.length && out.length < count) {
-    s = (s * 9301 + 49297) % 233280;
-    const idx = Math.floor((s / 233280) * arr.length);
-    out.push(arr.splice(idx, 1)[0]!);
-  }
-  return out;
-}
-
 function DailyPage() {
-  const { state, getLessonProgress, saveQuizResult, completeDaily } = useProgress();
+  const { getLessonProgress, saveQuizResult, completeDaily } = useProgress();
   const [open, setOpen] = useState<number[]>([]);
 
-  const seed = Number(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
   const pool = lessons.flatMap((l) => l.questions);
-  const daily = [
-    ...seededPick(pool, 5, seed),
-    ...seededPick(lessons.slice(0, 10).flatMap((l) => l.questions), 1, seed + 7),
-  ];
+
 
   return (
     <div className="space-y-10">
