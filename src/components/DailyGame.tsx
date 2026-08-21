@@ -213,12 +213,7 @@ export function DailyGame({
 
   const check = () => {
     setChecked(true);
-    const nextCorrect = store.c + (correctNow ? 1 : 0);
-    if (index + 1 >= questions.length) {
-      save({ ...store, c: nextCorrect });
-    } else {
-      save({ ...store, c: nextCorrect });
-    }
+    save({ ...store, c: store.c + (correctNow ? 1 : 0) });
   };
 
   const next = () => {
