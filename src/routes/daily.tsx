@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { lessons } from "@/data/lessons";
 import { Quiz } from "@/components/Quiz";
+import { DailyGame } from "@/components/DailyGame";
 import { useProgress } from "@/lib/progress";
 
 export const Route = createFileRoute("/daily")({
