@@ -13,7 +13,7 @@ export function Footer() {
           </p>
           <p className="mt-2 max-w-md text-sm text-muted-foreground">
             Бесплатный курс уровня A2: 20 видеоуроков, более 170 тренировочных вопросов и
-            сохранение прогресса прямо в браузере.
+            автоматическая синхронизация прогресса.
           </p>
         </div>
         <nav className="flex flex-col gap-2 text-sm">
@@ -39,7 +39,7 @@ export function Footer() {
             Смотреть весь плейлист
           </a>
           <p className="text-xs text-muted-foreground">
-            Прогресс хранится локально. Регистрация не нужна.
+            Прогресс синхронизируется между устройствами. Регистрация не нужна.
           </p>
         </div>
       </div>

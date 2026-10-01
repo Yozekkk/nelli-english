@@ -23,7 +23,9 @@ export function QuizResult({
           Правильных ответов: {correct} из {questions.length}
         </p>
         {bestScore != null ? (
-          <p className="text-sm text-muted-foreground">Лучший результат: {Math.max(bestScore, score)}%</p>
+          <p className="text-sm text-muted-foreground">
+            Лучший результат: {Math.max(bestScore, score)}%
+          </p>
         ) : null}
       </div>
       <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-muted">

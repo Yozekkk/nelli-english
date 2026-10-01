@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
 
 export interface NavItem {
   to: string;
@@ -24,9 +25,43 @@ export function MobileNavigation({
   onClose: () => void;
   progress: number;
 }) {
+  const drawerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusable = drawerRef.current?.querySelectorAll<HTMLElement>("button, a");
+    focusable?.[0]?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (event.key === "Tab" && focusable?.length) {
+        const first = focusable[0]!;
+        const last = focusable[focusable.length - 1]!;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKeyDown);
+      previousFocus?.focus();
+    };
+  }, [open, onClose]);
+
   return (
     <>
-      <div
+      <button
+        type="button"
+        aria-label="Закрыть меню"
+        aria-hidden={!open}
+        tabIndex={-1}
         onClick={onClose}
         className={cn(
           "fixed inset-0 z-40 bg-foreground/25 backdrop-blur-sm transition-opacity duration-300 md:hidden",
@@ -34,6 +69,11 @@ export function MobileNavigation({
         )}
       />
       <aside
+        ref={drawerRef}
+        role="dialog"
+        aria-modal={open}
+        aria-hidden={!open}
+        inert={!open}
         className={cn(
           "glass-panel fixed top-0 right-0 z-50 flex h-full w-[min(20rem,85vw)] flex-col gap-2 rounded-l-3xl p-6 transition-transform duration-400 ease-out md:hidden",
           open ? "translate-x-0" : "translate-x-full",

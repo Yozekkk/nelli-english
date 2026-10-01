@@ -917,6 +917,16 @@ English Step — изучение английского языка шаг за 
 
 This project was built with [Lovable](https://lovable.dev).
 
+## Progress storage
+
+Supabase project `fvbuoqdmsupksqrmnhjp` is the source of truth for the single learner. The browser keeps a cache and a retry queue for temporary network failures. On load, focus and reconnection it fetches the canonical state. Quiz attempts are sent as atomic, idempotent operations. The initial seed is applied only when the canonical learner does not yet exist.
+
+Copy `.env.example` to `.env.local` for local development and set the project's current publishable key. Configure the same two `VITE_*` variables on Vercel. Never use a service-role key in browser variables. The schema migration is in `supabase/migrations`.
+
+Security trade-off: this site deliberately has no accounts or login. Anyone with access to its private URL can interact with the shared single-user progress API. RLS confines public reads to `profile_key = 'primary'`; direct writes and DELETE are denied to the publishable role. Validated RPC operations handle writes.
+
+On first load, a pre-migration `english-step-progress-v1` browser value is copied to `english-step-progress-legacy-backup-v1` before the remote snapshot replaces the cache. This backup is not uploaded over the canonical seeded progress.
+
 **Live app**: https://nelli-english.lovable.app
 
 ## Build with Lovable

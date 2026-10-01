@@ -9,7 +9,10 @@ export const Route = createFileRoute("/daily")({
   head: () => ({
     meta: [
       { title: "Ежедневные вопросы — English Step" },
-      { name: "description", content: "Короткие тесты по 20 темам уровня A2 и режим «Вопросы дня»." },
+      {
+        name: "description",
+        content: "Короткие тесты по 20 темам уровня A2 и режим «Вопросы дня».",
+      },
       { property: "og:title", content: "Ежедневные вопросы — English Step" },
       { property: "og:description", content: "Закрепляй темы небольшими тестами каждый день." },
     ],
@@ -18,11 +21,11 @@ export const Route = createFileRoute("/daily")({
 });
 
 function DailyPage() {
-  const { getLessonProgress, saveQuizResult, completeDaily } = useProgress();
+  const { state, syncStatus, generation, getLessonProgress, saveQuizResult, completeDaily } =
+    useProgress();
   const [open, setOpen] = useState<number[]>([]);
 
   const pool = lessons.flatMap((l) => l.questions);
-
 
   return (
     <div className="space-y-10">
@@ -42,7 +45,14 @@ function DailyPage() {
           </span>
         </div>
         <div className="mt-4">
-          <DailyGame pool={pool} onFinish={() => completeDaily()} />
+          <DailyGame
+            pool={pool}
+            dailyDone={state.dailyDone}
+            streak={state.streak}
+            remoteReady={syncStatus === "saved"}
+            generation={generation}
+            onFinish={() => completeDaily()}
+          />
         </div>
       </section>
 
@@ -57,7 +67,9 @@ function DailyPage() {
                 type="button"
                 onClick={() =>
                   setOpen((prev) =>
-                    prev.includes(lesson.id) ? prev.filter((i) => i !== lesson.id) : [...prev, lesson.id],
+                    prev.includes(lesson.id)
+                      ? prev.filter((i) => i !== lesson.id)
+                      : [...prev, lesson.id],
                   )
                 }
                 className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 py-4 text-left"

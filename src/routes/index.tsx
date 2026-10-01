@@ -17,7 +17,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "English Step — английский за 20 уроков (уровень A2)" },
       {
         property: "og:description",
-        content: "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса.",
+        content:
+          "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса.",
       },
     ],
   }),
@@ -30,10 +31,7 @@ function Index() {
     (l) => lessonStatus(state.lessons[String(l.id)] ?? emptyLessonProgress) === "completed",
   ).length;
   const percent = Math.round((completed / lessons.length) * 100);
-  const best = Math.max(
-    0,
-    ...lessons.map((l) => state.lessons[String(l.id)]?.bestScore ?? 0),
-  );
+  const best = Math.max(0, ...lessons.map((l) => state.lessons[String(l.id)]?.bestScore ?? 0));
 
   return (
     <div className="space-y-16">
@@ -108,7 +106,11 @@ function Index() {
                   <span className="text-xs font-bold text-primary">Урок {lesson.id}</span>
                   <p className="mt-1 font-semibold">{lesson.shortTitle}</p>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    {status === "completed" ? "Урок завершён" : status === "not-started" ? "Не начат" : "В процессе"}
+                    {status === "completed"
+                      ? "Урок завершён"
+                      : status === "not-started"
+                        ? "Не начат"
+                        : "В процессе"}
                   </p>
                 </Link>
               </Reveal>

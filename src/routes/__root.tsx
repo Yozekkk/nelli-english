@@ -80,17 +80,37 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "English Step — английский за 20 уроков (уровень A2)" },
-      { name: "description", content: "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса." },
+      {
+        name: "description",
+        content:
+          "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса.",
+      },
       { name: "author", content: "Lovable" },
       { property: "og:title", content: "English Step — английский за 20 уроков (уровень A2)" },
-      { property: "og:description", content: "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса." },
+      {
+        property: "og:description",
+        content:
+          "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "English Step — английский за 20 уроков (уровень A2)" },
-      { name: "twitter:description", content: "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/260ae7b6-13f6-4970-8ed1-500049afb412/id-preview-8e388b84--23bb413d-12f9-4fb4-8e2a-d27fce82e6ae.lovable.app-1785745349851.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/260ae7b6-13f6-4970-8ed1-500049afb412/id-preview-8e388b84--23bb413d-12f9-4fb4-8e2a-d27fce82e6ae.lovable.app-1785745349851.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Бесплатный курс английского уровня A2: 20 видеоуроков, тесты с объяснениями и сохранение прогресса.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/260ae7b6-13f6-4970-8ed1-500049afb412/id-preview-8e388b84--23bb413d-12f9-4fb4-8e2a-d27fce82e6ae.lovable.app-1785745349851.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/260ae7b6-13f6-4970-8ed1-500049afb412/id-preview-8e388b84--23bb413d-12f9-4fb4-8e2a-d27fce82e6ae.lovable.app-1785745349851.png",
+      },
     ],
     links: [
       {
@@ -108,7 +128,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <head>
         <HeadContent />
       </head>
@@ -126,8 +146,17 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col bg-background text-foreground">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:rounded-full focus:bg-background focus:px-4 focus:py-2"
+        >
+          Перейти к содержимому
+        </a>
         <Header />
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-24 pb-28 sm:px-6 md:pb-16">
+        <main
+          id="main-content"
+          className="mx-auto w-full max-w-6xl flex-1 px-4 pt-24 pb-28 sm:px-6 md:pb-16"
+        >
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>

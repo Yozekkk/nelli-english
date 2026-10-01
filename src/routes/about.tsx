@@ -5,9 +5,15 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "О курсе — English Step (английский A2)" },
-      { name: "description", content: "Как устроен курс «Английский язык за 20 уроков» уровня A2." },
+      {
+        name: "description",
+        content: "Как устроен курс «Английский язык за 20 уроков» уровня A2.",
+      },
       { property: "og:title", content: "О курсе — English Step" },
-      { property: "og:description", content: "20 видеоуроков, тесты с объяснениями и локальное сохранение прогресса." },
+      {
+        property: "og:description",
+        content: "20 видеоуроков, тесты с объяснениями и локальное сохранение прогресса.",
+      },
     ],
   }),
   component: AboutPage,

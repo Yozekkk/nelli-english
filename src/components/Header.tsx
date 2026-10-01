@@ -4,14 +4,14 @@ import { useState } from "react";
 import { MobileNavigation, navItems } from "./MobileNavigation";
 import { ThemeToggle } from "./ThemeToggle";
 import { lessons } from "@/data/lessons";
-import { lessonStatus, useProgress } from "@/lib/progress";
+import { emptyLessonProgress, lessonStatus, useProgress } from "@/lib/progress";
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const { state } = useProgress();
+  const { state, syncStatus } = useProgress();
 
   const completed = lessons.filter(
-    (l) => lessonStatus(state.lessons[String(l.id)] ?? { watched: false, attempts: 0, lastScore: null, bestScore: null, lastAnswers: null, lastTotal: null, correctAnswers: 0 }) === "completed",
+    (l) => lessonStatus(state.lessons[String(l.id)] ?? emptyLessonProgress) === "completed",
   ).length;
   const progress = Math.round((completed / lessons.length) * 100);
 
@@ -25,7 +25,9 @@ export function Header() {
             </span>
             <span className="min-w-0">
               <span className="block truncate font-display text-base font-bold">English Step</span>
-              <span className="hidden text-xs text-muted-foreground sm:block">английский за 20 уроков</span>
+              <span className="hidden text-xs text-muted-foreground sm:block">
+                английский за 20 уроков
+              </span>
             </span>
           </Link>
 
@@ -44,6 +46,17 @@ export function Header() {
           </nav>
 
           <div className="flex items-center justify-end gap-2">
+            <span
+              className="hidden text-xs text-muted-foreground xl:inline"
+              role="status"
+              aria-live="polite"
+            >
+              {syncStatus === "saved"
+                ? "✓ Сохранено"
+                : syncStatus === "syncing"
+                  ? "Синхронизация…"
+                  : "Нет соединения"}
+            </span>
             <div className="hidden items-center gap-2 rounded-full border border-glass-border px-3 py-1.5 lg:flex">
               <div className="h-1.5 w-20 overflow-hidden rounded-full bg-muted">
                 <div

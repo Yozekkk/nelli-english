@@ -5,7 +5,12 @@ import { cn } from "@/lib/utils";
 export type Answer = string | string[];
 
 export const normalize = (s: string) =>
-  s.trim().toLowerCase().replace(/[’']/g, "'").replace(/[.,!?]/g, "").replace(/\s+/g, " ");
+  s
+    .trim()
+    .toLowerCase()
+    .replace(/[’']/g, "'")
+    .replace(/[.,!?]/g, "")
+    .replace(/\s+/g, " ");
 
 export function isAnswerCorrect(q: Question, answer: Answer | undefined): boolean {
   if (answer === undefined) return false;
@@ -53,7 +58,8 @@ export function QuizQuestion({
             <div className="mt-3 grid gap-2">
               {question.options.map((opt) => {
                 const selected = answer === opt;
-                const isRight = checked && normalize(opt) === normalize(question.correctAnswer as string);
+                const isRight =
+                  checked && normalize(opt) === normalize(question.correctAnswer as string);
                 const isWrongPick = checked && selected && !isRight;
                 return (
                   <button
@@ -107,7 +113,10 @@ export function QuizQuestion({
                 const options = Array.from(new Set(question.pairs!.map((p) => p.right)));
                 const current = Array.isArray(answer) ? (answer[i] ?? "") : "";
                 return (
-                  <div key={pair.left} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-2">
+                  <div
+                    key={pair.left}
+                    className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-2"
+                  >
                     <span className="truncate text-sm font-medium">{pair.left}</span>
                     <select
                       value={current}
@@ -177,7 +186,9 @@ function WordOrder({
       <div className="min-h-11 rounded-2xl border border-dashed border-glass-border p-2">
         <div className="flex flex-wrap gap-2">
           {answer.length === 0 ? (
-            <span className="px-2 py-1 text-xs text-muted-foreground">Нажимайте слова по порядку</span>
+            <span className="px-2 py-1 text-xs text-muted-foreground">
+              Нажимайте слова по порядку
+            </span>
           ) : null}
           {answer.map((w, i) => (
             <button

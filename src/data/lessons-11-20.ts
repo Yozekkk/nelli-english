@@ -5,7 +5,8 @@ export const lessons11to20: Lesson[] = [
     id: 11,
     title: "Модальные глаголы: must, should, have to и can",
     shortTitle: "Модальные глаголы",
-    description: "Обязанность, совет, необходимость и способность — как выбрать нужный модальный глагол.",
+    description:
+      "Обязанность, совет, необходимость и способность — как выбрать нужный модальный глагол.",
     videoUrl: "http://www.youtube.com/watch?v=lx7jLbYIPEk",
     youtubeId: "lx7jLbYIPEk",
     rules: [
@@ -1118,7 +1119,8 @@ export const lessons11to20: Lesson[] = [
         text: "Составьте предложение из слов.",
         options: ["please", "the", "off", "turn", "computer"],
         correctAnswer: ["please", "turn", "off", "the", "computer"],
-        explanation: "Please turn off the computer — с существительным предлог может стоять слитно.",
+        explanation:
+          "Please turn off the computer — с существительным предлог может стоять слитно.",
       },
       {
         id: "l20q10",

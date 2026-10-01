@@ -1,10 +1,21 @@
 import { ExternalLink } from "lucide-react";
 
-export function VideoPlayer({ youtubeId, title, videoUrl }: { youtubeId: string; title: string; videoUrl: string }) {
+export function VideoPlayer({
+  youtubeId,
+  title,
+  videoUrl,
+}: {
+  youtubeId: string;
+  title: string;
+  videoUrl: string;
+}) {
   return (
     <div className="space-y-3">
       <div className="glass-panel overflow-hidden rounded-3xl p-1.5">
-        <div className="relative w-full overflow-hidden rounded-[1.15rem]" style={{ aspectRatio: "16 / 9" }}>
+        <div
+          className="relative w-full overflow-hidden rounded-[1.15rem]"
+          style={{ aspectRatio: "16 / 9" }}
+        >
           <iframe
             className="absolute inset-0 h-full w-full"
             src={`https://www.youtube.com/embed/${youtubeId}`}

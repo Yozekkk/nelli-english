@@ -13,7 +13,10 @@ export const Route = createFileRoute("/lessons/")({
   head: () => ({
     meta: [
       { title: "Все 20 уроков — English Step" },
-      { name: "description", content: "20 видеоуроков английского уровня A2 с тестами и объяснениями." },
+      {
+        name: "description",
+        content: "20 видеоуроков английского уровня A2 с тестами и объяснениями.",
+      },
       { property: "og:title", content: "Все 20 уроков — English Step" },
       { property: "og:description", content: "Открой любой урок, посмотри видео и пройди тест." },
     ],
@@ -26,7 +29,7 @@ function LessonsPage() {
 
   return (
     <div className="space-y-8">
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+      <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="min-w-0">
           <h1 className="font-display text-3xl font-extrabold sm:text-4xl">Уроки курса</h1>
           <p className="mt-2 text-muted-foreground">
@@ -53,7 +56,11 @@ function LessonsPage() {
             <Reveal key={lesson.id} delay={i * 20}>
               <article
                 className={`glass-card flex h-full flex-col rounded-3xl p-5 ${unlocked ? "" : "opacity-60"}`}
-                title={unlocked ? undefined : "Откроется после просмотра предыдущего видео и 70% в его тесте"}
+                title={
+                  unlocked
+                    ? undefined
+                    : "Откроется после просмотра предыдущего видео и 70% в его тесте"
+                }
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="rounded-full bg-primary/12 px-3 py-1 text-xs font-bold text-primary">
@@ -73,7 +80,7 @@ function LessonsPage() {
                       <Link
                         to="/lessons/$lessonId"
                         params={{ lessonId: String(lesson.id) }}
-                        className="press brand-gradient rounded-full px-4 py-2 text-xs font-bold text-primary-foreground"
+                        className="press brand-gradient rounded-full px-4 py-2.5 text-xs font-bold text-primary-foreground"
                       >
                         Смотреть урок
                       </Link>
@@ -81,14 +88,14 @@ function LessonsPage() {
                         to="/lessons/$lessonId"
                         params={{ lessonId: String(lesson.id) }}
                         hash="quiz"
-                        className="press rounded-full border border-glass-border px-4 py-2 text-xs font-semibold hover:text-primary"
+                        className="press rounded-full border border-glass-border px-4 py-2.5 text-xs font-semibold hover:text-primary"
                       >
                         Пройти тест
                       </Link>
                       <button
                         type="button"
                         onClick={() => setWatched(lesson.id, !p.watched)}
-                        className="press rounded-full border border-glass-border px-4 py-2 text-xs font-semibold hover:text-primary"
+                        className="press rounded-full border border-glass-border px-4 py-2.5 text-xs font-semibold hover:text-primary"
                       >
                         {p.watched ? "Просмотрено ✓" : "Отметить как просмотренный"}
                       </button>

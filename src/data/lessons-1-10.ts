@@ -583,7 +583,8 @@ export const lessons1to10: Lesson[] = [
     id: 6,
     title: "Future Simple и конструкция be going to",
     shortTitle: "Future Simple и be going to",
-    description: "Разница между спонтанным решением, прогнозом и заранее запланированным действием.",
+    description:
+      "Разница между спонтанным решением, прогнозом и заранее запланированным действием.",
     videoUrl: "http://www.youtube.com/watch?v=4r-CsWGYVwk",
     youtubeId: "4r-CsWGYVwk",
     rules: [
@@ -1019,12 +1020,7 @@ export const lessons1to10: Lesson[] = [
         id: "l9q9",
         type: "single-choice",
         text: "Выберите подходящее время: I can't go out. I ___ my work yet.",
-        options: [
-          "didn't finish",
-          "haven't finished",
-          "don't finish",
-          "am not finishing",
-        ],
+        options: ["didn't finish", "haven't finished", "don't finish", "am not finishing"],
         correctAnswer: "haven't finished",
         explanation: "Слово yet и результат в настоящем требуют Present Perfect.",
       },

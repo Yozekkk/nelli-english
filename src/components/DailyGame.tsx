@@ -4,10 +4,12 @@ import { Link } from "@tanstack/react-router";
 import type { Question } from "@/data/types";
 import { QuizQuestion, isAnswerCorrect, type Answer } from "./QuizQuestion";
 import { cn } from "@/lib/utils";
+import { localDateKey, previousLocalDateKey } from "@/lib/date";
 
 /* ---------------- cookie storage ---------------- */
 
 const COOKIE = "english_step_daily_progress";
+const COOKIE_GENERATION = "english-step-daily-generation-v1";
 
 interface DailyCookie {
   /** дата последнего прохождения / текущей попытки (локальная) */
@@ -30,19 +32,15 @@ interface DailyCookie {
 
 const emptyCookie: DailyCookie = { d: "", i: 0, c: 0, a: {}, f: false, s: 0, b: 0, l: null };
 
-export function localDateKey(date = new Date()): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
-
 function readCookie(): DailyCookie {
   if (typeof document === "undefined") return emptyCookie;
   const match = document.cookie.split("; ").find((c) => c.startsWith(`${COOKIE}=`));
   if (!match) return emptyCookie;
   try {
-    return { ...emptyCookie, ...(JSON.parse(decodeURIComponent(match.slice(COOKIE.length + 1))) as DailyCookie) };
+    return {
+      ...emptyCookie,
+      ...(JSON.parse(decodeURIComponent(match.slice(COOKIE.length + 1))) as DailyCookie),
+    };
   } catch {
     return emptyCookie;
   }
@@ -80,7 +78,9 @@ function toTrueFalse(q: Question, rnd: () => number): Question | null {
   if (!q.text.includes("___") || !q.options || typeof q.correctAnswer !== "string") return null;
   const wrong = q.options.filter((o) => o !== q.correctAnswer);
   const useCorrect = rnd() > 0.5;
-  const word = useCorrect ? q.correctAnswer : (wrong[Math.floor(rnd() * wrong.length)] ?? q.correctAnswer);
+  const word = useCorrect
+    ? q.correctAnswer
+    : (wrong[Math.floor(rnd() * wrong.length)] ?? q.correctAnswer);
   if (!useCorrect && word === q.correctAnswer) return null;
   return {
     id: `${q.id}-tf`,
@@ -163,9 +163,17 @@ export function buildDailySet(pool: Question[], dateKey: string): Question[] {
 export function DailyGame({
   pool,
   onFinish,
+  dailyDone,
+  streak,
+  remoteReady,
+  generation,
 }: {
   pool: Question[];
   onFinish?: (correct: number, total: number) => void;
+  dailyDone: boolean;
+  streak: number;
+  remoteReady: boolean;
+  generation: string | null;
 }) {
   const [dateKey] = useState(() => localDateKey());
   const questions = useMemo(() => buildDailySet(pool, dateKey), [pool, dateKey]);
@@ -173,14 +181,29 @@ export function DailyGame({
   const [store, setStore] = useState<DailyCookie>(emptyCookie);
   const [hydrated, setHydrated] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [replaying, setReplaying] = useState(false);
 
   useEffect(() => {
     const raw = readCookie();
-    const fresh =
-      raw.d === dateKey ? raw : { ...raw, d: dateKey, i: 0, c: 0, a: {}, f: false };
+    const fresh = raw.d === dateKey ? raw : { ...raw, d: dateKey, i: 0, c: 0, a: {}, f: false };
     setStore(fresh);
     setHydrated(true);
   }, [dateKey]);
+
+  useEffect(() => {
+    if (!remoteReady || !generation) return;
+    const previous = window.localStorage.getItem(COOKIE_GENERATION);
+    const oldCookie = readCookie();
+    const staleWithoutMarker = !previous && !dailyDone && (oldCookie.f || streak === 0);
+    if ((previous && previous !== generation) || staleWithoutMarker) {
+      const fresh = { ...emptyCookie, d: dateKey };
+      setStore(fresh);
+      writeCookie(fresh);
+      setChecked(false);
+      setReplaying(false);
+    }
+    window.localStorage.setItem(COOKIE_GENERATION, generation);
+  }, [dailyDone, dateKey, generation, remoteReady, streak]);
 
   const save = (next: DailyCookie) => {
     setStore(next);
@@ -191,12 +214,13 @@ export function DailyGame({
   const current = questions[index];
   const answer = current ? store.a[current.id] : undefined;
   const correctNow = current ? isAnswerCorrect(current, answer) : false;
-  const answered =
-    Array.isArray(answer) ? answer.length > 0 : typeof answer === "string" && answer.trim() !== "";
+  const answered = Array.isArray(answer)
+    ? answer.length > 0
+    : typeof answer === "string" && answer.trim() !== "";
 
   const finish = (correct: number) => {
     const score = Math.round((correct / questions.length) * 100);
-    const yesterday = localDateKey(new Date(Date.now() - 86400000));
+    const yesterday = previousLocalDateKey();
     const alreadyToday = store.l === dateKey;
     const streak = alreadyToday ? store.s : store.l === yesterday ? store.s + 1 : 1;
     save({
@@ -234,6 +258,24 @@ export function DailyGame({
     return <div className="h-56 animate-pulse rounded-3xl border border-glass-border bg-glass" />;
   }
 
+  if (dailyDone && !store.f && !replaying) {
+    return (
+      <div className="rounded-3xl border border-glass-border bg-glass p-5">
+        <p className="font-display text-xl font-bold">Сегодняшняя тренировка выполнена</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Серия дней: {streak}. Прогресс получен с другого устройства.
+        </p>
+        <button
+          type="button"
+          onClick={() => setReplaying(true)}
+          className="press mt-4 rounded-full border border-glass-border px-5 py-3 text-sm font-semibold"
+        >
+          Потренироваться ещё
+        </button>
+      </div>
+    );
+  }
+
   const progress = store.f ? 100 : Math.round((index / questions.length) * 100);
 
   return (
@@ -253,7 +295,7 @@ export function DailyGame({
         </div>
         <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-glass-border bg-glass px-3 py-1.5 text-sm font-bold">
           <Flame className="h-4 w-4 text-primary" />
-          {store.s}
+          {streak}
         </span>
       </div>
 
@@ -270,7 +312,7 @@ export function DailyGame({
             {[
               ["Правильные ответы", `${store.c}`],
               ["Ошибки", `${questions.length - store.c}`],
-              ["Серия дней", `🔥 ${store.s}`],
+              ["Серия дней", `🔥 ${streak}`],
               ["Лучший результат", `${store.b}%`],
             ].map(([label, value]) => (
               <div key={label} className="rounded-2xl bg-muted/50 p-3">
@@ -304,9 +346,7 @@ export function DailyGame({
             index={index}
             answer={answer}
             checked={checked}
-            onChange={(value) =>
-              save({ ...store, a: { ...store.a, [current.id]: value } })
-            }
+            onChange={(value) => save({ ...store, a: { ...store.a, [current.id]: value } })}
           />
 
           {checked ? (

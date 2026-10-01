@@ -12,7 +12,9 @@ export const Route = createFileRoute("/lessons/$lessonId")({
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Урок не найден — English Step" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: "Урок не найден — English Step" }, { name: "robots", content: "noindex" }],
+      };
     }
     const { lesson } = loaderData;
     return {
@@ -36,7 +38,9 @@ function LessonPage() {
   return (
     <article className="space-y-8">
       <header>
-        <span className="text-sm font-bold text-primary">Урок {lesson.id} из {lessons.length}</span>
+        <span className="text-sm font-bold text-primary">
+          Урок {lesson.id} из {lessons.length}
+        </span>
         <h1 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">{lesson.title}</h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">{lesson.description}</p>
       </header>

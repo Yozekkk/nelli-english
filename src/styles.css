@@ -228,6 +228,15 @@
     scroll-behavior: smooth;
   }
 
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  :where(a, button) {
+    touch-action: manipulation;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);

@@ -21,7 +21,10 @@ export function ProgressRing({
   const offset = circumference - (clamped / 100) * circumference;
 
   return (
-    <div className={cn("relative grid place-items-center", className)} style={{ width: size, height: size }}>
+    <div
+      className={cn("relative grid place-items-center", className)}
+      style={{ width: size, height: size }}
+    >
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -53,10 +56,10 @@ export function ProgressRing({
       </svg>
       <div className="absolute inset-0 grid place-items-center text-center">
         <div>
-          <div className="font-display text-3xl font-bold">{label ?? `${Math.round(clamped)}%`}</div>
-          {sublabel ? (
-            <div className="mt-1 text-xs text-muted-foreground">{sublabel}</div>
-          ) : null}
+          <div className="font-display text-3xl font-bold">
+            {label ?? `${Math.round(clamped)}%`}
+          </div>
+          {sublabel ? <div className="mt-1 text-xs text-muted-foreground">{sublabel}</div> : null}
         </div>
       </div>
     </div>
