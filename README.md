@@ -82,4 +82,4 @@ bun run preview
 
 - [Исследование модели прогресса](docs/research-production.md): источники данных, ограничения доступа и миграции
 - [Исследование статистики](docs/research-stats.md): история попыток и данные dashboard
-- [nelli-english-stats](https://github.com/Yozekkk/nelli-english-stats): отдельный dashboard, который читает данные этого курса
+- `nelli-english-stats`: отдельный dashboard, который читает данные курса; доступ к его репозиторию ограничен
